@@ -10,14 +10,15 @@ import {
   getContactNameAction,
   setCurrentGroupIdAction,
   unsetCurrentGroupIdAction,
-} from "src/redux/actions";
+  useGetContactsQuery,
+} from "src/redux/contactsReducer";
+import { useGetGroupsQuery } from "src/redux/groupContactsReducer";
 
 export const ContactListPage = memo(() => {
-  const { filtered, loading, error } = useAppSelector(
-    (state) => state.contacts
-  );
+  const { isLoading, error } = useGetContactsQuery();
+  const { filtered } = useAppSelector((state) => state.contacts);
 
-  const { all: groups } = useAppSelector((state) => state.groups);
+  const { data: groups } = useGetGroupsQuery();
   const dispatch = useAppDispatch();
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
@@ -26,7 +27,7 @@ export const ContactListPage = memo(() => {
       dispatch(getContactNameAction(fvName));
     } else dispatch(unsetCurrentGroupIdAction());
     if (fv.groupId && fv.groupId !== "Open this select menu") {
-      const currentGroupContacts = groups.find(({ id }) => id === fv.groupId);
+      const currentGroupContacts = groups?.find(({ id }) => id === fv.groupId);
       if (currentGroupContacts) {
         dispatch(setCurrentGroupIdAction(currentGroupContacts));
         dispatch(filterByCurrentGroupIdAction());
@@ -38,14 +39,17 @@ export const ContactListPage = memo(() => {
 
   return (
     <>
-      {!loading ? (
+      {!isLoading ? (
         !error ? (
           <Row xxl={1}>
-            <FilterForm
-              groupContactsList={groups}
-              initialValues={{}}
-              onSubmit={onSubmit}
-            />
+            {groups && (
+              <FilterForm
+                groupContactsList={groups}
+                initialValues={{}}
+                onSubmit={onSubmit}
+              />
+            )}
+
             <Row
               xxs={1}
               xs={1}

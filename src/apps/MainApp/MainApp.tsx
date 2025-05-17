@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "./MainApp.scss";
 import { ThemeProvider } from "react-bootstrap";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -11,43 +10,7 @@ import {
   GroupListPage,
 } from "src/pages";
 
-import { useAppDispatch } from "src/redux/hooks";
-import axios from "axios";
-import {
-  loadContactsActionFailure,
-  loadContactsActionRequest,
-  loadContactsActionSuccess,
-  loadGroupContactsAction,
-  setFavoritesContactsAction,
-} from "src/redux/actions";
-
 export const MainApp = () => {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(loadContactsActionRequest());
-    axios
-      .get("http://localhost:3001/contacts")
-      .then((response) => {
-        dispatch(loadContactsActionSuccess(response.data));
-      })
-      .catch((error) => {
-        dispatch(loadContactsActionFailure(error.message));
-      })
-      .finally(() => {
-        dispatch(setFavoritesContactsAction());
-      });
-
-    axios
-      .get("http://localhost:3001/groups")
-      .then((response) => {
-        dispatch(loadGroupContactsAction(response.data));
-      })
-      .catch((error) => {
-        dispatch(loadContactsActionFailure(error.message));
-      });
-  }, []);
-
   return (
     <ThemeProvider
       breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}

@@ -6,6 +6,7 @@ import { useAppSelector } from "src/redux/hooks";
 
 export const ContactPage = () => {
   const { contactId } = useParams<{ contactId: string }>();
+
   const contact = useAppSelector((state) => {
     return state.contacts.all.find(({ id }) => id === contactId);
   });
