@@ -1,14 +1,13 @@
-import { memo } from "react";
+import { observer } from "mobx-react-lite";
 
 import { Col, Row } from "react-bootstrap";
 import { GroupContactsCard } from "src/components/GroupContactsCard";
-import { useGetGroupsQuery } from "src/redux/groupContactsReducer";
+import { groupsStore } from "src/store/groupsStore";
 
-export const GroupListPage = memo(() => {
-  const { data: groups } = useGetGroupsQuery();
+export const GroupListPage = observer(() => {
   return (
     <Row xxl={4}>
-      {groups?.map((groupContacts) => (
+      {groupsStore.all.map((groupContacts) => (
         <Col key={groupContacts.id}>
           <GroupContactsCard groupContacts={groupContacts} withLink />
         </Col>

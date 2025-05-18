@@ -9,8 +9,12 @@ import {
   FavoritListPage,
   GroupListPage,
 } from "src/pages";
+import { contactStore } from "src/store/contactsStore";
+import { groupsStore } from "src/store/groupsStore";
 
 export const MainApp = () => {
+  contactStore.getContacts();
+  groupsStore.getGroups();
   return (
     <ThemeProvider
       breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}

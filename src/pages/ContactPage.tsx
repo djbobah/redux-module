@@ -2,14 +2,12 @@ import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { ContactCard } from "src/components/ContactCard";
 import { Empty } from "src/components/Empty";
-import { useAppSelector } from "src/redux/hooks";
+import { contactStore } from "src/store/contactsStore";
 
 export const ContactPage = () => {
   const { contactId } = useParams<{ contactId: string }>();
 
-  const contact = useAppSelector((state) => {
-    return state.contacts.all.find(({ id }) => id === contactId);
-  });
+  const contact = contactId && contactStore.getContactById(contactId);
 
   return (
     <Row xxl={3}>
