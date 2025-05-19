@@ -1,10 +1,11 @@
 import { Col, Row } from "react-bootstrap";
 import { ContactCard } from "src/components/ContactCard";
-import { FilterForm, FilterFormValues } from "src/components/FilterForm";
+import { FilterForm } from "src/components/FilterForm";
 import { ContactDto } from "src/types/dto/ContactDto";
 import { contactStore } from "src/store/contactsStore";
 import { observer } from "mobx-react-lite";
 import { groupsStore } from "src/store/groupsStore";
+import { FilterFormValues } from "src/types/common";
 
 export const ContactListPage = observer(() => {
   const onSubmit = (fv: Partial<FilterFormValues>) => {

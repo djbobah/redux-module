@@ -1,17 +1,7 @@
 import { Formik } from "formik";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { memo } from "react";
-import { FormikConfig } from "formik/dist/types";
-import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
-
-export interface FilterFormValues {
-  name: string;
-  groupId: string;
-}
-
-interface FilterFormProps extends FormikConfig<Partial<FilterFormValues>> {
-  groupContactsList: GroupContactsDto[];
-}
+import { FilterFormProps } from "src/types/common";
 
 export const FilterForm = memo<FilterFormProps>(
   ({ onSubmit, initialValues = {}, groupContactsList }) => {
