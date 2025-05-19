@@ -1,52 +1,67 @@
-import React, {memo, useState} from 'react';
-import {CommonPageProps} from './types';
-import {Col, Row} from 'react-bootstrap';
-import {ContactCard} from 'src/components/ContactCard';
-import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
-import {ContactDto} from 'src/types/dto/ContactDto';
+import { Col, Row } from "react-bootstrap";
+import { ContactCard } from "src/components/ContactCard";
+import { FilterForm } from "src/components/FilterForm";
+import { ContactDto } from "src/types/dto/ContactDto";
+import { contactStore } from "src/store/contactsStore";
+import { observer } from "mobx-react-lite";
+import { groupsStore } from "src/store/groupsStore";
+import { FilterFormValues } from "src/types/common";
 
-
-export const ContactListPage = memo<CommonPageProps>(({
-  contactsState, groupContactsState
-}) => {
-  const [contacts, setContacts] = useState<ContactDto[]>(contactsState[0])
+export const ContactListPage = observer(() => {
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    let findContacts: ContactDto[] = contactsState[0];
-
     if (fv.name) {
-      const fvName = fv.name.toLowerCase();
-      findContacts = findContacts.filter(({name}) => (
-        name.toLowerCase().indexOf(fvName) > -1
-      ))
-    }
-
-    if (fv.groupId) {
-      const groupContacts = groupContactsState[0].find(({id}) => id === fv.groupId);
-
-      if (groupContacts) {
-        findContacts = findContacts.filter(({id}) => (
-          groupContacts.contactIds.includes(id)
-        ))
+      const fvName = fv.name?.toLowerCase() || "";
+      contactStore.filterContactByName(fvName);
+    } else contactStore.unsetCurrentGroupId();
+    if (fv.groupId && fv.groupId !== "Open this select menu") {
+      const currentGroupContacts = groupsStore.all.find(
+        ({ id }) => id === fv.groupId
+      );
+      if (currentGroupContacts) {
+        contactStore.setCurrentGroupId(currentGroupContacts);
+        contactStore.filterByCurrentGroupId();
+      } else {
+        contactStore.unsetCurrentGroupId();
       }
     }
-
-    setContacts(findContacts)
-  }
+  };
 
   return (
-    <Row xxl={1}>
-      <Col className="mb-3">
-        <FilterForm groupContactsList={groupContactsState[0]} initialValues={{}} onSubmit={onSubmit} />
-      </Col>
-      <Col>
-        <Row xxl={4} className="g-4">
-          {contacts.map((contact) => (
-            <Col key={contact.id}>
-              <ContactCard contact={contact} withLink />
-            </Col>
-          ))}
-        </Row>
-      </Col>
-    </Row>
+    <>
+      {!contactStore.loading ? (
+        !contactStore.error ? (
+          <Row xxl={1}>
+            {groupsStore.all && (
+              <FilterForm
+                groupContactsList={groupsStore.all}
+                initialValues={{}}
+                onSubmit={onSubmit}
+              />
+            )}
+
+            <Row
+              xxs={1}
+              xs={1}
+              sm={1}
+              md={2}
+              lg={4}
+              xl={4}
+              xxl={4}
+              className="g-4"
+            >
+              {contactStore.filtered.map((contact: ContactDto) => (
+                <Col key={contact.id}>
+                  <ContactCard contact={contact} withLink />
+                </Col>
+              ))}
+            </Row>
+          </Row>
+        ) : (
+          `Error: ${contactStore.error}`
+        )
+      ) : (
+        "loading"
+      )}
+    </>
   );
-})
+});
