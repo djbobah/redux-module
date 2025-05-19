@@ -1,25 +1,16 @@
-import { ContactDto } from "src/types/dto/ContactDto";
+import { ProjectActions } from "./actions";
 import {
   FILTER_BY_CURRENT_GROUP_ID_ACTION,
   GET_CONTACT_NAME_ACTION,
   LOAD_CONTACTS_ACTION_FAILURE,
   LOAD_CONTACTS_ACTION_REQUEST,
   LOAD_CONTACTS_ACTION_SUCCESS,
-  ProjectActions,
   SET_CURRENT_GROUP_ID_ACTION,
   SET_FAVORITES_CONTACTS_ACTION,
   UNSET_CURRENT_GROUP_ID_ACTION,
-} from "./actions";
-import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
+} from "./constants";
+import { ContactsState } from "./types";
 
-interface ContactsState {
-  all: ContactDto[];
-  filtered: ContactDto[];
-  favorites: string[];
-  loading: boolean;
-  error: string;
-  currentGroupId: GroupContactsDto | undefined;
-}
 const initialState: ContactsState = {
   all: [],
   filtered: [],

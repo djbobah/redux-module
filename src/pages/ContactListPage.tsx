@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Col, Row } from "react-bootstrap";
 import { ContactCard } from "src/components/ContactCard";
-import { FilterForm, FilterFormValues } from "src/components/FilterForm";
+import { FilterForm } from "src/components/FilterForm";
 import { ContactDto } from "src/types/dto/ContactDto";
 
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
@@ -11,6 +11,7 @@ import {
   setCurrentGroupIdAction,
   unsetCurrentGroupIdAction,
 } from "src/redux/actions";
+import { FilterFormValues } from "src/types/common";
 
 export const ContactListPage = memo(() => {
   const { filtered, loading, error } = useAppSelector(

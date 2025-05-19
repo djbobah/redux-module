@@ -1,3 +1,5 @@
+import { ContactDto } from "src/types/dto/ContactDto";
+import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
 import {
   FILTER_BY_CURRENT_GROUP_ID_ACTION,
   GET_CONTACT_NAME_ACTION,
@@ -9,9 +11,7 @@ import {
   SET_CURRENT_GROUP_ID_ACTION,
   SET_FAVORITES_CONTACTS_ACTION,
   UNSET_CURRENT_GROUP_ID_ACTION,
-} from "src/redux/actions";
-import { ContactDto } from "src/types/dto/ContactDto";
-import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
+} from "./constants";
 
 export interface LoadContactsActionRequest {
   type: typeof LOAD_CONTACTS_ACTION_REQUEST;
@@ -62,4 +62,18 @@ export interface GetGroupContactAction {
   payload: {
     id: GroupContactsDto["id"];
   };
+}
+
+export interface GroupsState {
+  all: GroupContactsDto[];
+  currentGroupId: string;
+}
+
+export interface ContactsState {
+  all: ContactDto[];
+  filtered: ContactDto[];
+  favorites: string[];
+  loading: boolean;
+  error: string;
+  currentGroupId: GroupContactsDto | undefined;
 }
