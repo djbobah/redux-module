@@ -3,16 +3,8 @@ import { ContactDto } from "src/types/dto/ContactDto";
 import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { url } from "inspector";
+import { ContactsState } from "src/types/common";
 
-interface ContactsState {
-  all: ContactDto[];
-  filtered: ContactDto[];
-  favorites: string[];
-  loading: boolean;
-  error: string;
-  currentGroupId: GroupContactsDto | undefined;
-}
 const initialState: ContactsState = {
   all: [],
   filtered: [],

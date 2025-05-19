@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Col, Row } from "react-bootstrap";
 import { ContactCard } from "src/components/ContactCard";
-import { FilterForm, FilterFormValues } from "src/components/FilterForm";
+import { FilterForm } from "src/components/FilterForm";
 import { ContactDto } from "src/types/dto/ContactDto";
 
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
@@ -13,6 +13,7 @@ import {
   useGetContactsQuery,
 } from "src/redux/contactsReducer";
 import { useGetGroupsQuery } from "src/redux/groupContactsReducer";
+import { FilterFormValues } from "src/types/common";
 
 export const ContactListPage = memo(() => {
   const { isLoading, error } = useGetContactsQuery();
